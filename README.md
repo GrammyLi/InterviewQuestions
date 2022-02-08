@@ -19,21 +19,92 @@
 ### HTML 篇
 
 - [页面导入样式时，使用 link 和 @import 有什么区别。](https://github.com/a1029563229/InterviewQuestions/blob/master/html/1)
+
+1. 导入内容范围：@import 只能导入样式表，link 还可以定义 RSS、rel 连接属性、引入网站图标等
+2. 加载顺序: 加载页面时，link 标签引入的 CSS 被同时加载；@import 引入的 CSS 将在页面加载完毕后被加载；
+  
 - [常见浏览器内核](https://github.com/a1029563229/InterviewQuestions/blob/master/html/2)
 - [简述浏览器的渲染原理](https://github.com/a1029563229/InterviewQuestions/blob/master/html/3)
+  
+1. html -> dom 树（ DOM 元素及属性节点组成的）
+2. CSS 进行解析，生成 CSSOM 规则树；
+3. 根据 DOM 树和 CSSOM 规则树构建 Render Tree。渲染树的节点被称为渲染对象，渲染对象是一个包含有颜色和大小等属性的矩形，渲染对象和 DOM 对象相对应，但这种对应关系不是一对一的，不可见的 DOM 元素不会被插入渲染树。
+4. 当渲染对象被创建并添加到树中，它们并没有位置和大小，所以当浏览器生成渲染树以后，就会根据渲染树来进行布局（也可以叫做回流）。这一阶段浏览器要做的事情就是要弄清楚各个节点在页面中的确切位置和大小。通常这一行为也被称为“自动重排”。
+5. 布局阶段结束后是绘制阶段，比那里渲染树并调用对象的 paint 方法将它们的内容显示在屏幕上，绘制使用 UI 基础组件。
+
+为了更好的用户体验，渲染引擎会尽可能早的将内容呈现到屏幕上，并不会等到所有的 html 解析完成之后再去构建和布局 render tree。它是解析完一部分内容就显示一部分内容，同时可能还在网络下载其余内容。
+
+解释了先加载文本，再样式等
 - [HTML5 的 form 的自动完成功能是什么？](https://github.com/a1029563229/InterviewQuestions/blob/master/html/4)
-- [如何实现浏览器内多个标签页之间的通信？](https://github.com/a1029563229/InterviewQuestions/blob/master/html/5)
+
+1. form 标签相应属性状态设置成 ture
+2. 
+- 如何实现浏览器内多个标签页之间的通信？](https://github.com/a1029563229/InterviewQuestions/blob/master/html/5)
+1. localStorage
+2. Websocket
+
 - [简述前端性能优化](https://github.com/a1029563229/InterviewQuestions/blob/master/html/6)
+
+1. 雅虎多少条来这
 - [什么是 webp](https://github.com/a1029563229/InterviewQuestions/blob/master/html/7)
+图片格式
+1. 这里可以将图像的组成
+
+WebP 是谷歌开发的一种新图片格式，它是支持有损和无损两种压缩方式的使用直接色的点阵图。使用 webp 格式的最大优点是是，在相同质量的文件下，它拥有更小的文件体积。因此它非常适合于网络图片的传输，因为图片体积的减少，意味着请求时间的减少，这样会提高用户的体验。这是谷歌开发的一种新的图片格式。
+
 
 <h3 id="#1.2">CSS 篇</h2>
 
 - [介绍下 BFC 及其应用](https://github.com/a1029563229/InterviewQuestions/blob/master/css/1)
+
+CSS 渲染模式，相当于一个独立的容器，里面的元素和外部的元素相互不影响。
+
+创建 BFC 的方式有：
+
+html 根元素
+float 浮动
+绝对定位
+overflow 不为 visible
+display 为表格布局或者弹性布局；
+BFC 主要的作用是：
+
+清除浮动
+防止同一 BFC 容器中的相邻元素间的外边距重叠问题
+
+
 - [怎么让一个 div 水平垂直居中](https://github.com/a1029563229/InterviewQuestions/blob/master/css/2)
+
+1. flex
+2. 父元素： position: relative; 子元素： position: absolute， 浮动百分之五十，相对自己移动百分之五十
 - [介绍下重绘和回流（Repaint & Reflow），以及如何进行优化](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/13)
+
+浏览器渲染机制
+- 浏览器采用流式布局模型（Flow Based Layout）；
+- 浏览器会把 HTML 解析成 DOM，把 CSS 解析成 CSSOM,DOM 和 CSSOM 合并就产生了渲染树（Render Tree）；
+- 有了 RenderTree，我们就知道了所有节点的样式，然后计算他们在页面上的大小和位置，最后把节点绘制到页面上；
+- 由于浏览器使用流式布局，对 Render Tree 的计算通常只需要遍历一次就可以完成，但 table 及其内部元素除外，他们可能需要多次计算，通常要花 3 倍于同等元素的时间，这也是为什么要避免使用 table 布局的原因之一；
+
+重绘
+- 由于节点的集合属性发生改变或者由于样式改变而不会影响布局的，成为重绘，例如 outline、visibility、color、background-color 等，重绘的代价是高昂的，因此浏览器必须验证 DOM 树上其他节点元素的可见性。
+
+回流
+- 回流是布局或者几何属性需要改变就称为回流。回流是影响浏览器性能的关键因素，因为其变化涉及到部分页面（或是整个页面）的布局更新。一个元素的回流可能会导致其素有子元素以及 DOM 中紧随其后的节点、祖先节点元素的随后的回流。大部分的回流将导致页面的重新渲染。
+
+回流必定会发生重绘，重绘不一定会引发回流
+
 - [分析比较 opacity: 0、visibility: hidden、display: none 优劣和适用场景](https://github.com/a1029563229/InterviewQuestions/blob/master/css/3)
 - [简述 CSS 盒模型](https://github.com/a1029563229/InterviewQuestions/blob/master/css/4)
+
+盒子由 margin、border、padding、content 组成；
+
+标准盒模型：box-sizing: content-box;
+
+IE 盒模型：box-sizing: border-box;
 - [简述 Rem 及其转换原理](https://github.com/a1029563229/InterviewQuestions/blob/master/css/5)
+
+rem 是 CSS3 新增的相对长度单位，是指相对于根元素 html 的 font-size 计算值的大小。
+
+默认根元素的 font-size 都是 16px的。如果想要设置 12px 的字体大小也就是 12px/16px = 0.75rem
 - [移动端视口配置](https://github.com/a1029563229/InterviewQuestions/blob/master/css/6)
 - [简述伪类和伪元素](https://github.com/a1029563229/InterviewQuestions/blob/master/css/7)
 - [行内元素的 margin 和 padding](https://github.com/a1029563229/InterviewQuestions/blob/master/css/8)
@@ -45,6 +116,8 @@
 ### Javascript 篇
 
 - [Vue 的响应式原理中 Object.defineProperty 有什么缺陷？为什么在 Vue3.0 采用了 Proxy，抛弃了 Object.defineProperty？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/2)
+
+
 - [（滴滴、饿了么）写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/3)
 - [['1', '2', '3'].map(parseInt) what & why ?](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/4)
 - [（挖财）什么是防抖和节流？有什么区别？如何实现？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/5)
