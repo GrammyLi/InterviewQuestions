@@ -116,18 +116,39 @@ rem 是 CSS3 新增的相对长度单位，是指相对于根元素 html 的 fon
 ### Javascript 篇
 
 - [Vue 的响应式原理中 Object.defineProperty 有什么缺陷？为什么在 Vue3.0 采用了 Proxy，抛弃了 Object.defineProperty？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/2)
-
+1. Proxy 不仅可以代理对象，还可以代理数组。
+2. Object.defineProperty 只能劫持对象的属性
 
 - [（滴滴、饿了么）写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/3)
+
+1. diff 函数
+
+key 所对应相应 虚拟节点
 - [['1', '2', '3'].map(parseInt) what & why ?](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/4)
 - [（挖财）什么是防抖和节流？有什么区别？如何实现？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/5)
+防抖 高频事件后 n 秒内函数只会执行一次，如果 n 秒内高频事件再次被触发，则重新计算时间。
+节流 高频事件触发，但在 n 秒内只会执行一次，所以节流会稀释函数的执行效率。
 - [介绍下 Set、Map、WeakSet 和 WeakMap 的区别？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/6)
 - [ES5/ES6 的继承除了写法以外还有什么区别？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/7)
 - [setTimeout、Promise、Async/Await 的区别](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/8)
+
+setTimeout: setTimeout 的回调函数放到宏任务队列里，等到执行栈清空以后执行；
+
+Promise: Promise 本身是同步的立即执行函数，当在 executor 中执行 resolve 或者 reject 的时候，此时是异步操作，会先执行 then/catch 等，当主栈完成时，才会去调用 resolve/reject 方法中存放的方法。
+
+async: async 函数返回一个 Promise 对象，当函数执行的时候，一旦遇到 await 就会先返回，等到触发的异步操作完成，再执行函数体内后面的语句。可以理解为，是让出了线程，跳出了 async 函数体。
+
 - [（头条、微医）Async/Await 如何通过同步的方式（形式）实现异步](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/9)
 - [简述一下 Generator 函数](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/10)
 - [（滴滴、挖财、微医、海康）JS 异步解决方案的发展历程以及优缺点。](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/11)
 - [简述浏览器缓存读取规则](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/15)
+
+使用缓存从而减少响应数据。
+浏览器对于缓存的处理是根据第一次请求资源返回的响应头来确定的。
+
+
+Disk Cache 覆盖面基本上是最大的。它会根据 HTTP Header 中的字段判断哪些资源需要缓存，哪些资源可以不请求直接使用，哪些资源已经过期需要重新请求。并且即使在跨站点的情况下，相同地址的资源一旦被硬盘缓存下来，就不会再次去请求数据。绝大部分的缓存都来自 Disk Cache。
+
 - [为什么 Vuex 的 mutation 和 Redux 的 reducer 中不能做异步操作？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/16)
 - [（京东）下面代码中 a 在什么情况下会打印 1？](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/17)
 - [在 Vue 中，子组件为何不可以修改父组件传递的 Prop，如果修改了，Vue 是如何监控到属性的修改并给出警告的。](https://github.com/a1029563229/InterviewQuestions/blob/master/javascript/18)
